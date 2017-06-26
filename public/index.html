@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>rAlPha's light</title>
+	<title>valkyrie-translator</title>
 
 	<!-- update the version number as needed -->
 	<script defer src="/__/firebase/3.7.8/firebase-app.js"></script>
@@ -20,9 +20,9 @@
 	integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
 	crossorigin="anonymous"></script>
 	<!-- CDN::Angular -->
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 	<!-- CDN::Angular ui-router -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
 	<!-- CDN::Angular-material -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js"></script>
@@ -43,17 +43,11 @@
 	<div layout="column" layout-fill ng-controller="app" ng-cloak>
 		<md-toolbar class="md-hue-2">
 			<div class="md-toolbar-tools">
-				<h2 flex md-truncate>rAlPha's light bulb</h2>
+				<h2 flex md-truncate>valkyrie-translator</h2>
 
-				<md-switch ng-model="video" ng-show="user" aria-label="Video">
-					<h4>Video</h4>
-			  	</md-switch>
-
-				<md-button ng-click="session()" aria-label="Session" layout layout-align="center center">
-					<img ng-src="{{user.photoURL}}" ng-show="user" style="height: 40px; border-radius: 20px;" />&nbsp;
-					<span>{{user.displayName || 'Login'}}</span>&nbsp;
-					<md-icon class="material-icons" ng-show="!loging">{{user ? 'exit_to_app' : 'lock'}}</md-icon>
-					<md-progress-circular ng-show="loging" class="md-accent" md-diameter="15"></md-progress-circular>
+				<md-button ng-click="about()" aria-label="About" layout layout-align="center center">
+					<md-icon>info</md-icon>
+					<md-tooltip>About</md-tooltip>
 				</md-button>
 			</div>
 		</md-toolbar>
