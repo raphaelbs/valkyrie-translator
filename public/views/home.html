@@ -1,0 +1,38 @@
+<div flex layout-xs="column" layout-sm="column" layout-gt-sm layout-margin layout-align="space-between">
+
+	<md-content md-whiteframe="3" flex-xs="30" flex-sm="30" flex-gt-sm="30" flex="30" ng-if="user" layout>
+		<md-list flex>
+			<md-subheader class="md-no-sticky">Últimas interações</md-subheader>
+			<md-list-item class="md-3-line" ng-repeat="user in users | orderBy:'-date'" ng-click="null">
+				<img ng-src="{{user.photoURL}}" class="md-avatar" alt="{{user.displayName}}" />
+				<div class="md-list-item-text" layout="column">
+					<h3 ng-bind="user.displayName"></h3>
+					<h4>{{user.action ? 'Ligou' : 'Desligou'}}</h4>
+					<p relative-date="user.date"></p>
+				</div>
+			</md-list-item>
+		</md-list>
+	</md-content>
+
+	<md-content md-whiteframe="3" layout layout-margin layout-align="center center" flex ng-if="user">
+		<img flex="none"
+			alt="Se você está vendo essa mensagem, provavelmente a transmissão está offline"
+			ng-show="video" src="http://177.179.198.123:8080/video" height="320" width="240"
+			style="cursor: pointer;"
+			ng-click="light.change()">
+		<div layout="column" layout-align="center center" flex>
+			<i
+				style="cursor: pointer;"
+				ng-click="light.change()"
+				class="material-icons light"
+				ng-class="light.class">lightbulb_outline</i>
+			<h3 ng-bind="light.caption"></h3>
+			<p>Toque para interagir</p>
+		</div>
+	</md-content>
+
+	<div md-whiteframe="3" layout layout-align="center center" flex ng-if="!user">
+		<h2 ng-show="!loging">Faça login para descobrir</h2>
+		<h2 ng-show="loging">Entrando...</h2>
+	</div>
+</div>
