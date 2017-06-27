@@ -16,16 +16,20 @@
 		</md-list>
 	</md-content>
 
-	<div md-whiteframe="3" layout layout-margin layout-align="center center" flex>
+	<div md-whiteframe="3" layout="column" layout-align="center center" flex>
 		<div ng-if="!loaded">Select a file from the list.</div>
-		<div ng-if="loaded" layout="column">
-			<div>
-				<md-toolbar ng-click="raw = !raw">
+		<div ng-if="loaded" layout="column" layout-align="space-between" flex>
+			<div layout="column">
+				<md-toolbar>
 					<div class="md-toolbar-tools">
-						<h3 flex md-truncate>Translate <span ng-if="raw">(click to expand)</span></h3>
+						<h3 flex md-truncate ng-click="raw = !raw">Translate <span ng-if="raw">(click to expand)</span></h3>
+						<md-button ng-click="update()" aria-label="Update" layout layout-align="center center">
+							<md-icon>refresh</md-icon>
+							<md-tooltip>Update file</md-tooltip>
+						</md-button>
 					</div>
 				</md-toolbar>
-				<md-content ng-if="!raw">
+				<div ng-if="!raw" layout-margin flex>
 					<h3>Filter your language</h3>
 					<md-input-container>
 						<label>Language</label>
@@ -34,33 +38,35 @@
 							<md-option ng-repeat="lang in filterLanguages" ng-value="lang" ng-bind="lang"></md-option>
 						</md-select>
 					</md-input-container>
-					<table>
-						<tbody>
-							<tr>
-								<th>Keyword</th>
-								<th ng-repeat="language in languages | filter:filter" ng-bind="::language"></th>
-							</tr>
-							<tr ng-repeat="keyword in keywords">
-								<td ng-bind="::keyword.title"></td>
-								<td ng-repeat="language in languages | filter:filter">
-									<md-input-container>
-										<label ng-bind="::language"></label>
-										<input ng-model="keyword[language]">
-									</md-input-container>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</md-content>
+					<md-content>
+						<table>
+							<tbody>
+								<tr>
+									<th>Keyword</th>
+									<th ng-repeat="language in languages | filter:filter" ng-bind="::language"></th>
+								</tr>
+								<tr ng-repeat="keyword in keywords">
+									<td ng-bind="::keyword.title"></td>
+									<td ng-repeat="language in languages | filter:filter">
+										<md-input-container>
+											<label><span ng-bind="::keyword.title"></span>&nbsp;in&nbsp;<span ng-bind="::language"></span></label>
+											<input ng-model="keyword[language]">
+										</md-input-container>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</md-content>
+				</div>
 			</div>
 			<div layout="column">
-				<md-toolbar ng-click="raw = !raw">
+				<md-toolbar>
 					<div class="md-toolbar-tools">
-						<h3 flex md-truncate>Raw file <span ng-if="!raw">(click to expand)</span></h3>
+						<h3 flex md-truncate ng-click="raw = !raw">Raw file <span ng-if="!raw">(click to expand)</span></h3>
 					</div>
 				</md-toolbar>
-				<md-content ng-if="raw">
-					<pre ng-include ng-src="selectedFile"></pre>
+				<md-content ng-if="raw" layout-margin flex>
+					<pre ng-bind="::selectedFile.data"></pre>
 				</md-content>
 			</div>
 		</div>

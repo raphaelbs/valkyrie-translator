@@ -1,6 +1,6 @@
 angular.module('app', ['ui.router', 'ngMaterial', 'ngMessages']);
 
-angular.module('app').config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$mdThemingProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $mdThemingProvider) {
+angular.module('app').config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$mdThemingProvider', '$compileProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $mdThemingProvider, $compileProvider, $httpProvider) {
 
 	$mdThemingProvider.theme('default')
 	.primaryPalette('indigo')
@@ -11,6 +11,14 @@ angular.module('app').config(['$stateProvider', '$urlRouterProvider', '$location
 		requireBase: false
 	});
 
+	// Performance boost
+	$compileProvider.debugInfoEnabled(false);
+	$compileProvider.commentDirectivesEnabled(false);
+	$compileProvider.cssClassDirectivesEnabled(false);
+	$httpProvider.useApplyAsync(true);
+
+
+	// States
 	$urlRouterProvider.otherwise('/');
 
 	$stateProvider
@@ -36,15 +44,32 @@ angular.module('app').controller('app', ['$scope', '$http', function($scope, $ht
 		}
 	];
 
-	$scope.filterLanguages = ["English","Spanish","French","German","Italian","Portuguese","Polish","Japanese","Chinese"];
-	$scope.languages = ["English","Spanish","French","German","Italian","Portuguese","Polish","Japanese","Chinese"];
-	$scope.keywords = [{title: "ABILITY"}, {title: "ABOUT"}, {title: "ABOUT_FFG"}];
+	$scope.update = function () {
+		console.log('update');
+	};
 
 	$scope.load = function (file) {
 		$http.get(file.path)
 		.then(function (data) {
 			$scope.loaded = true;
 			$scope.selectedFile = data;
+			Interpreter(data.data);
 		});
 	};
+
+	function Interpreter(text) {
+		text = text.replace(/(\r\n|\n|\r)/gm, "\n");
+		var lines = text.split('\n');
+		$scope.languages = lines.shift();
+		$scope.languages = $scope.languages.split(',');
+		$scope.languages.shift();
+		$scope.filterLanguages = angular.copy($scope.languages);
+		$scope.keywords = [];
+		lines.forEach(function (line) {
+			if(line.indexOf(',')>0) $scope.keywords.push(line.substr(0, line.indexOf(',')));
+		});
+		$scope.keywords.map(function (line) {
+			return {title: line};
+		});
+	}
 }]);
